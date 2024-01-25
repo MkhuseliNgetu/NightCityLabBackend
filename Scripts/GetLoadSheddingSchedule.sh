@@ -15,25 +15,23 @@ ESPToken="${2}"
 #Check API Allowance 
 GetMyBalance="$(curl --request GET 'https://developer.sepush.co.za/business/2.0/api_allowance' --header 'token:'${ESPToken} | tee APIBalance.txt)"
 LocalBalance="$(cut -b 23-24 APIBalance.txt | tr --d ,)"
-if [[ "${LocalBalance}" -gt 10 ]]
+if [[ "${LocalBalance}" -lt 50 ]]
 then
    echo 'Current API Call Balance:' $LocalBalance
-elif [[ "${LocalBalance}" -lt 10 ]]
+elif [[ "${LocalBalance}" -eq 50 ]]
 then 
     echo 'Current API Call Balance:' $LocalBalance
 fi
 
 #Get My LoadShedding Schedule
-if [[ "${LocalBalance}" -le 10 ]]
+if [[ "${LocalBalance}" -lt 50 ]]
 then
-    echo 'API Balance is too low or API Balance has been exceeded. Use existing outputs instead!'
-elif [[ "${LocalBalance}" -gt 10 ]]
-then
-    GetCurrentSchedule="$(curl --location --request GET 'https://developer.sepush.co.za/business/2.0/area?id='${MyLocation}'&test=current' --header 'token:'${ESPToken} | tee CurrentLoadSheddingSchedule.txt)"
-    GetFutureSchedule="$(curl --location --request GET 'https://developer.sepush.co.za/business/2.0/area?id='${MyLocation}'&test=future'  --header 'token:'${ESPToken} | tee UpcomingLoadSheddingSchedule.txt)"
+    GetCurrentSchedule="$(curl --location --request GET 'https://developer.sepush.co.za/business/2.0/area?id='${MyLocation} --header 'token:'${ESPToken} > CurrentLoadSheddingSchedule.json)"
     echo 'API call made successfully'
+elif [[ "${LocalBalance}" -eq 50 ]]
+then
+      echo 'API Balance has been exceeded. Using existing outputs instead!'
 fi
-
 
 if [[ "${?}" -eq 0 ]]
 then
