@@ -11,17 +11,18 @@ import (
 
 var s gocron.Scheduler
 var PhoneMbalula string
-var GetGwede string
 
 func EskomSePush(NewArea string, NewToken string) {
 	if NewArea != "" && NewToken != "" {
 		PhoneMbalula := LoadSheddingSchedule(NewArea, NewToken)
 		fmt.Print(PhoneMbalula)
-		GetGwede := GetLoadSheddingUpdates("SNAKE")
-		fmt.Print(strings.Split(GetGwede[0], "Current"))
 	} else if NewArea == "" && NewToken == "" {
 		fmt.Printf("Loadshedding schedule update failed.")
 	}
+}
+
+func JobUpdates() {
+	fmt.Printf("Jobs are running, please wait...  \n")
 }
 
 func RunCronJobs() {
@@ -29,9 +30,12 @@ func RunCronJobs() {
 
 	s.Every(1).Hour().Do(func() {
 		EskomSePush("tshwane-13-thereeds", "ADA190D5-7B76409E-BF774100-B7D024CD")
+
 	})
 
 	s.StartAsync()
+
+	JobUpdates()
 
 }
 
@@ -47,7 +51,7 @@ type Loadshedding struct {
 func LoadSheddingSchedule(Area string, License string) string {
 	Cmd, MyErrors := exec.Command("./Scripts/GetLoadSheddingSchedule.sh", Area, License).Output()
 
-	fmt.Printf("Request is running... / \n")
+	fmt.Printf("EskomSePush is running... / \n")
 
 	if MyErrors != nil {
 		fmt.Printf("error %s", MyErrors)

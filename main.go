@@ -8,9 +8,14 @@ import (
 	"net/http"
 	jobs "nightcitylabbackend/Jobs"
 	"os"
+	"strings"
 )
 
+var FinalSchedule []string
+
 func main() {
+
+	jobs.RunCronJobs()
 
 	http.HandleFunc("/", GetMainPage)
 	http.HandleFunc("/Update", SendSchedule)
@@ -24,7 +29,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	jobs.RunCronJobs()
 }
 
 func GetMainPage(w http.ResponseWriter, r *http.Request) {
@@ -34,12 +38,15 @@ func GetMainPage(w http.ResponseWriter, r *http.Request) {
 
 func SendSchedule(w http.ResponseWriter, r *http.Request) {
 
+	FinalSchedule := jobs.GetLoadSheddingUpdates("Solidus")
+	DD := strings.Split(FinalSchedule[0], "Current")
+
 	//CORS
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
 
-	json.NewEncoder(w).Encode(jobs.Loadshedding{Schedule: jobs.GetGwede})
+	json.NewEncoder(w).Encode(jobs.Loadshedding{Schedule: strings.Join(DD, "")})
 
 	fmt.Printf("Request Successful / \n")
 }

@@ -1,1 +1,0 @@
-{"allowance":{"count":21,"limit":50,"type":"daily"}}
