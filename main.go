@@ -12,6 +12,7 @@ import (
 )
 
 var FinalSchedule []string
+var DC []string
 
 func main() {
 
@@ -39,7 +40,11 @@ func GetMainPage(w http.ResponseWriter, r *http.Request) {
 func SendSchedule(w http.ResponseWriter, r *http.Request) {
 
 	FinalSchedule := jobs.GetLoadSheddingUpdates("Solidus")
-	DD := strings.Split(FinalSchedule[0], "Current")
+	DF := FinalSchedule[0]
+	DD := strings.Split(DF, "Current")
+	//DC := strings.Join(DD, "")
+	//ReadySchedule := strings.Join(strings.Split(DC, "\n"), "")
+	//DDD := strconv.Itoa(int(len(ReadySchedule)))
 
 	//CORS
 	w.Header().Set("Access-Control-Allow-Origin", "*")

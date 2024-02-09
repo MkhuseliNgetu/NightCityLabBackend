@@ -21,7 +21,7 @@ do
         EndTimes="$(grep -Po '"end": *\K"[^"]*"' CurrentLoadSheddingSchedule.json | head -n 1 | cut -b 12-17 | sed 's/T/ /g')"
         Stages="$(grep -Po '"note": *\K"[^"]*"' CurrentLoadSheddingSchedule.json | head -n 1)"
 
-        echo "Upcomming Starting Time:" ${StartTimes} 
+        echo "Upcomming Starting Time:" ${StartTimes}
         echo "Upcomming Ending Time:" ${EndTimes}
         echo "Upcomming Stage:" ${Stages}
     fi
