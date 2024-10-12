@@ -25,11 +25,11 @@ func JobUpdates() {
 	fmt.Printf("Jobs are running, please wait...  \n")
 }
 
-func RunCronJobs() {
+func RunCronJobs(EskomLocation string, EskomAPI string) {
 	s := gocron.NewScheduler(time.Local)
 
 	s.Every(1).Hour().Do(func() {
-		EskomSePush("tshwane-13-thereeds", "ADA190D5-7B76409E-BF774100-B7D024CD")
+		EskomSePush(EskomLocation, EskomAPI)
 
 	})
 
@@ -40,7 +40,7 @@ func RunCronJobs() {
 }
 
 func jobs() {
-	RunCronJobs()
+	//RunCronJobs()
 }
 
 type Loadshedding struct {
